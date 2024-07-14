@@ -21,6 +21,8 @@ const firebaseConfig = {
 }
 
 const app = initializeApp(firebaseConfig as any)
-const auth = getAuth(app)
+
 const db = getFirestore(app, "skanuj-wygrywaj")
+const auth = getAuth(app)
+
 export { db, auth, onAuthStateChanged }

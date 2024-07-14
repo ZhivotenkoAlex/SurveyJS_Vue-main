@@ -83,9 +83,16 @@ export default {
   data: () => ({
     surveyList: [],
     user: { role: 123 },
+    companyId: "",
+    accessToken: "",
+    loading: false,
+    loading2: false,
+    loading3: false,
+    loading4: false,
   }),
   created() {
     this.initialize()
+    this.parseUrl()
   },
   methods: {
     initialize() {
@@ -131,6 +138,11 @@ export default {
     },
     resultSurvey(uid) {
       this.$router.push(`/result/${uid}`)
+    },
+    parseUrl() {
+      const urlParams = new URLSearchParams(window.location.search)
+      this.companyId = urlParams.get("companyId")
+      this.accessToken = urlParams.get("accessToken")
     },
   },
 }
