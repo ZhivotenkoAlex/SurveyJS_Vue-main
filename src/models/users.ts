@@ -192,7 +192,6 @@ export async function _existUser(email, collection_name) {
     id: doc.id,
     ...doc.data(),
   }))
-  console.log(documents.length ? true : false, "documents")
 
   if (documents.length > 0) {
     return true
@@ -209,17 +208,17 @@ export async function getCurrentUser(email) {
     ...doc.data(),
   }))
 
-  const UsersCollection = collection(db, "users")
-  const u_q = query(UsersCollection, where("email", "==", email))
-  const u_querySnapshot = await getDocs(u_q)
-  const u_documents = u_querySnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }))
-  console.log(
-    documents.length > 0 ? documents[0] : u_documents[0],
-    "documents.length > 0 ? documents[0] : u_documents[0];"
-  )
+  // const UsersCollection = collection(db, "users")
+  // const u_q = query(UsersCollection, where("email", "==", email))
+  // const u_querySnapshot = await getDocs(u_q)
+  // const u_documents = u_querySnapshot.docs.map((doc) => ({
+  //   id: doc.id,
+  //   ...doc.data(),
+  // }))
+  // console.log(
+  //   documents.length > 0 ? documents[0] : u_documents[0],
+  //   "documents.length > 0 ? documents[0] : u_documents[0];"
+  // )
   return documents.length > 0 ? `company` : `user`
 }
 
@@ -251,6 +250,7 @@ export async function fetchUserData(access_token: string) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const data = await response.json()
+    localStorage.setItem("userId", data.id)
     return data
   } catch (error) {
     console.error("Error fetching user data:", error)
@@ -270,7 +270,6 @@ export async function checkCompanyUser(email, companyId) {
     id: doc.id,
     ...doc.data(),
   }))
-  console.log(u_documents, email, companyId, "4444")
 
   return u_documents.length > 0 ? true : false
 }
@@ -287,11 +286,9 @@ export async function checkPassword(email, password, companyId) {
     ...doc.data(),
   }))
   const user: any = u_documents[0]
-  console.log(u_documents, "user")
 
   if (user) {
     const isMatch = await bcrypt.compare(password, user.password)
-    console.log(user, password, isMatch)
     if (isMatch) {
       return true
     } else {

@@ -30,7 +30,7 @@ export default {
       this.surveyData = data
       this.survey = new Model(data.json)
       try {
-        const userId = getParamFromUrl("user_id")
+        const userId = localStorage.getItem("userId")
 
         if (userId) {
           const user = await getUserData(userId)
