@@ -91,23 +91,30 @@ export default {
     loading4: false,
   }),
   created() {
-    this.initialize()
     this.parseUrl()
+    this.initialize()
   },
   methods: {
     initialize() {
       ;(async () => {
         try {
-          auth.onAuthStateChanged(async (user) => {
-            if (user) {
-              const surveyLists = await getCompanySurvey(user.email)
-              this.surveyList = surveyLists
-              const getRole = await getCurrentUser(user.email)
-              this.user = { ...user, role: getRole }
-            } else {
-              this.user = { role: 123 }
-            }
-          })
+          if (this.companyId) {
+            const surveyLists = await getCompanySurvey(this.companyId)
+            this.surveyList = surveyLists
+            const getRole = await getCurrentUser(this.companyId)
+            this.user = { role: getRole }
+          } else {
+            auth.onAuthStateChanged(async (user) => {
+              if (user) {
+                const surveyLists = await getCompanySurvey(user.email)
+                this.surveyList = surveyLists
+                const getRole = await getCurrentUser(user.email)
+                this.user = { ...user, role: getRole }
+              } else {
+                this.user = { role: 123 }
+              }
+            })
+          }
         } catch (error) {
           console.error("Error fetching user:", error)
         }
@@ -116,7 +123,7 @@ export default {
     async addSurvey() {
       const newObj = {
         name: `New Survey ${[...this.surveyList].length + 1} `,
-        companyId: this.user.email,
+        companyId: this.companyId ? this.companyId : this.user.email,
         json: "{}",
       }
 

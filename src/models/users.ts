@@ -234,6 +234,29 @@ export async function getUserData(id) {
     return null
   }
 }
+
+export async function fetchUserData(access_token: string) {
+  const baseUrl = import.meta.env.VITE_BASE_URL
+  const url = `${baseUrl}user/get-user`
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        "Content-Type": "application/json",
+        accept: "*/*",
+      },
+    })
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error fetching user data:", error)
+  }
+}
+
 export async function checkCompanyUser(email, companyId) {
   const UsersCollection = collection(db, "users")
   const u_q = query(
