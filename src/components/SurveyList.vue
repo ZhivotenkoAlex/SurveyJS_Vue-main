@@ -54,7 +54,7 @@
   </v-container>
 </template>
 <script>
-import { getCompanyInfo, getCompanySurvey } from "@/models/survey"
+import { getCompanyInfo, getCompanyBondedSurvey } from "@/models/survey"
 import { auth } from "@/firebase"
 import { getCurrentUser, fetchUserData } from "@/models/users"
 import { getParamFromUrl } from "@/utils"
@@ -100,8 +100,12 @@ export default {
             const companyId = companyInfo.company_id
               ? companyInfo.company_id
               : companyInfo.email
-            const surveyLists = await getCompanySurvey(companyId)
-            this.surveyList = surveyLists
+            const surveyList = await getCompanyBondedSurvey(companyId)
+            this.surveyList = surveyList
+            if (surveyList.length > 0) {
+              const surveyId = surveyList[0].id
+              this.runSurvey(surveyId)
+            }
           }
         } catch (error) {
           console.error("Error fetching user:", error)
