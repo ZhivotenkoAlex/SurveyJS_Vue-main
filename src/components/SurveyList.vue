@@ -1,6 +1,9 @@
 <template>
-  <v-container>
-    <div v-for="survey in surveyList" :key="survey.id">
+  <v-container class="expanded">
+    <div v-if="surveyList.length === 0">
+      <VueSpinnerGrid class="spinner" size="40" color="blue" />
+    </div>
+    <div v-else v-for="survey in surveyList" :key="survey.id">
       <v-row>
         <v-col cols="4" sm="4" md="4">
           <div class="text-body-1">{{ survey.name }}</div>
@@ -58,6 +61,7 @@ import { getCompanyInfo, getCompanyBondedSurvey } from "@/models/survey"
 import { auth } from "@/firebase"
 import { getCurrentUser, fetchUserData } from "@/models/users"
 import { getParamFromUrl } from "@/utils"
+import { VueSpinnerGrid } from "vue3-spinners"
 
 export default {
   data: () => ({
@@ -67,6 +71,9 @@ export default {
   }),
   created() {
     this.initialize()
+  },
+  components: {
+    VueSpinnerGrid,
   },
   methods: {
     initialize() {
@@ -118,3 +125,15 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.expanded {
+  height: 90vh;
+}
+</style>

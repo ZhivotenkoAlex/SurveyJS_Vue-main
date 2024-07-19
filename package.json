@@ -29,6 +29,7 @@
     "v-clipboard": "^3.0.0-next.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5",
+    "vue3-spinners": "^1.2.2",
     "vuetify": "^3.6.8",
     "vuex": "^4.1.0",
     "xlsx": "^0.16.9"
