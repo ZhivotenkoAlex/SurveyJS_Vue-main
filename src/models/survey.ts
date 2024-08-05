@@ -156,10 +156,22 @@ export async function createSurveyHistory(
 
 export async function getSurvey(id: any) {
   const surveyDoc = await getDoc(doc(db, "surveys", id))
+  const customizationCollectionRef = collection(surveyDoc.ref, "customization")
+  const customizationSnapshot = await getDocs(customizationCollectionRef)
+  let customization = customizationSnapshot.docs.map((doc) => ({
+    ...doc.data(),
+  }))?.[0]
+  if (customizationSnapshot.empty) {
+    customization = null as any
+  }
   return surveyDoc.exists()
-    ? { id: surveyDoc.id, ...(surveyDoc.data() as any) }
+    ? {
+        survey: { id: surveyDoc.id, ...(surveyDoc.data() as any) },
+        customization: customization,
+      }
     : null
 }
+
 export async function postResult(id: string, json: any, userId: string) {
   await addDoc(collection(db, "results"), { json: json, userId })
 }

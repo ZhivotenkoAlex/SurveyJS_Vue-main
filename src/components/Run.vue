@@ -1,9 +1,9 @@
 <template>
   <h1>{{ surveyData.name }}</h1>
-  <SurveyComponent :model="survey" />
+  <SurveyComponent class="body-custom" :model="survey" />
 </template>
 <script>
-import { Model, StylesManager } from "survey-core"
+import { Model } from "survey-core"
 import {
   getSurvey,
   postResult,
@@ -15,12 +15,11 @@ import "survey-core/defaultV2.css"
 import { auth } from "@/firebase"
 import { getCurrentUser, getUserData } from "@/models/users"
 
-StylesManager.applyTheme("defaultV2")
-
 export default {
   data: () => ({
     surveyData: {},
     survey: null,
+    custom: null,
     user: {},
     userEmail: null,
     role: "user",
@@ -33,8 +32,12 @@ export default {
       const { id: surveyId } = this.$route.params
 
       const data = await getSurvey(`${surveyId}`)
-      this.surveyData = data
-      this.survey = new Model(data.json)
+      this.surveyData = data.survey
+      this.survey = new Model(data.survey.json)
+      this.custom = data.customization
+      if (this.custom) {
+        this.survey.applyTheme(this.custom)
+      }
       try {
         const userId = localStorage.getItem("userId")
 
@@ -93,3 +96,14 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.body-custom :deep(.sd-body) {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.body-custom :deep(.sd-btn) {
+  color: #fff;
+}
+</style>

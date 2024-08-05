@@ -1,0 +1,12 @@
+{
+  "themeName": "custom",
+  "isPanelless": true,
+  "cssVariables": {
+    "--sjs-font-family": "Times New Roman, serif",
+    "--sjs-primary-backcolor": "#4665e2",
+    "--sjs-font-size": "16px",
+    "complete_btn_font_color": "#ffffff",
+    "--sjs-primary-backcolor-light": "#4665e21a"
+  },
+  "headerView": "basic"
+}
