@@ -42,9 +42,9 @@
       </v-row>
     </div>
 
-    <div v-if="error">
+    <!-- <div v-if="error">
       <v-alert type="error" dismissible> Error fetching user </v-alert>
-    </div>
+    </div> -->
     <!-- <v-btn v-if="user.role == 'company'" class="ma-2" :loading="loading4" :disabled="loading4" color="success"
             @click="addSurvey">
             Add Survey

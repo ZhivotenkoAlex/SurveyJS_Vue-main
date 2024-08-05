@@ -5,3 +5,15 @@
 /* html {
   overflow: hidden;
 } */
+
+html {
+  overflow-y: auto !important; /* or overflow-y: hidden; */
+}
+
+html .svc-tab-designer {
+  overflow-y: hidden;
+}
+
+.svc-creator--mobile .svc-tab-designer {
+  overflow-y: hidden;
+}
