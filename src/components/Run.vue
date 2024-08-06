@@ -50,10 +50,14 @@ export default {
         isPanelless: "true",
         themeName: "custom",
         cssVariables: {
+          "--sjs-font-surveytitle-color": company.main_font_color,
+          "--sjs-font-questiontitle-color": company.main_font_color,
+          "--sjs-font-questiondescription-color": company.primary_font_color,
           "--sjs-primary-backcolor": company.main_color,
           "--sjs-primary-backcolor-light": `${company.main_color}1a`,
           "--sjs-general-forecolor-light": company.primary_font_color,
           "--sjs-general-backcolor-dim": company.layout_background_color_inner,
+          "--sjs-primary-forecolor": company.main_font_color,
         },
       }
 
@@ -148,9 +152,9 @@ export default {
   /* padding-right: 0; */
 }
 
-.body-custom :deep(.sd-btn) {
+/* .body-custom :deep(.sd-btn) {
   color: #fff;
-}
+} */
 
 /* .body-custom :deep(.sd-title) {
   font-family: "Popins";
