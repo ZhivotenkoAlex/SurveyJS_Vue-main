@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ surveyData.name }}</h1>
+  <!-- <h1>{{ surveyData.name }}</h1>  -->
   <SurveyComponent class="body-custom" :model="survey" />
 </template>
 <script>
@@ -10,6 +10,7 @@ import {
   getSurveyGamification,
   updateFan,
   createSurveyHistory,
+  getCompany,
 } from "../models/survey"
 import "survey-core/defaultV2.css"
 import { auth } from "@/firebase"
@@ -32,9 +33,31 @@ export default {
       const { id: surveyId } = this.$route.params
 
       const data = await getSurvey(`${surveyId}`)
+
       this.surveyData = data.survey
       this.survey = new Model(data.survey.json)
-      this.custom = data.customization
+      const company = await getCompany(data.survey.companyId)
+      if (company.layout_font_url && company.layout_font_font_type) {
+        this.applyCustomFont(
+          company.layout_font_url,
+          company.layout_font_font_type,
+          company.main_color
+        )
+      }
+
+      const customStyles = {
+        headerView: "basic",
+        isPanelless: "true",
+        themeName: "custom",
+        cssVariables: {
+          "--sjs-primary-backcolor": company.main_color,
+          "--sjs-primary-backcolor-light": `${company.main_color}1a`,
+          "--sjs-general-forecolor-light": company.primary_font_color,
+          "--sjs-general-backcolor-dim": company.layout_background_color_inner,
+        },
+      }
+
+      this.custom = customStyles
       if (this.custom) {
         this.survey.applyTheme(this.custom)
       }
@@ -93,17 +116,47 @@ export default {
         }
       })
     },
+
+    applyCustomFont(url, family, main_color) {
+      const style = document.createElement("style")
+      style.innerHTML = `
+        @import url('${url}');
+
+        * {
+            font-family: '${family}', sans-serif !important;
+          }
+        .container-fluid {
+          background-color: ${main_color} !important;
+        }
+      `
+      document.head.appendChild(style)
+    },
   },
 }
 </script>
 
 <style scoped>
 .body-custom :deep(.sd-body) {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 12px;
+  /* padding-right: 10px; */
+  /* padding-left: 0; */
+  padding-right: 0;
+}
+
+.body-custom :deep(.sd-page) {
+  padding: 0 calc(1 * (var(--sjs-base-unit, var(--base-unit, 8px))));
+  /* padding-right: 0; */
 }
 
 .body-custom :deep(.sd-btn) {
   color: #fff;
+}
+
+/* .body-custom :deep(.sd-title) {
+  font-family: "Popins";
+} */
+
+.body-custom :deep(.sd-action-bar) {
+  justify-content: center;
 }
 </style>

@@ -187,3 +187,8 @@ export async function getResults(id: string) {
     .map((item) => item["json"]["surveyResultText"])
   return filteredResults
 }
+
+export async function getCompany(id: string) {
+  const resultDoc = await getDoc(doc(db, "company", id))
+  return resultDoc.exists() ? { id: resultDoc.id, ...resultDoc.data() } : null
+}

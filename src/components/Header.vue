@@ -2,9 +2,9 @@
 <template>
   <nav v-if="isHeaderShown" class="navbar navbar-default">
     <div class="container-fluid">
-      <div class="navbar-header">
+      <!-- <div class="navbar-header">
         <img src="/assets/logo.svg" class="" alt="logo" height="50px" />
-      </div>
+      </div> -->
       <ul class="nav navbar-nav">
         <li v-if="isLoggedIn && role == 'user'">
           <router-link to="#" class="white" @click="gotoSurvey"
